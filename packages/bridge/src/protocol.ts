@@ -39,6 +39,7 @@ export const commands = {
 	stopJob: (job: JobId) => __TAURI_INVOKE<null>("stop_job", { job }),
 	export: (format: ExportFormat) => __TAURI_INVOKE<null>("export", { format }),
 	getThumbnail: (page: EntityId) => __TAURI_INVOKE<ThumbnailBytes>("get_thumbnail", { page }),
+	getPageSourceImage: (page: EntityId) => __TAURI_INVOKE<SourceImageBytes>("get_page_source_image", { page }),
 	getFonts: () => __TAURI_INVOKE<FontFamily[]>("get_fonts"),
 	getFontPreview: (familyName: string) => __TAURI_INVOKE<FontPreviewBytes>("get_font_preview", { familyName }),
 	savePreferences: (pipeline: PipelineConfig, providers: ProviderPreferences, typesetting: TypesettingConfig) => __TAURI_INVOKE<Preferences>("save_preferences", { pipeline, providers, typesetting }),
@@ -439,6 +440,8 @@ export type Scope = { scope: "project" } | { scope: "pages"; value: EntityId[] }
 	page: EntityId,
 	bounds: Bounds,
 } } | { scope: "entities"; value: EntityId[] };
+
+export type SourceImageBytes = number[];
 
 export type SourceText = {
 	text: string,
