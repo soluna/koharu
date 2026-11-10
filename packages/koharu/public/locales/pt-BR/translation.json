@@ -54,6 +54,7 @@
     "working": "Trabalhando…"
   },
   "canvas": {
+    "compareView": "Comparar com o original",
     "empty": "Selecione uma página para começar.",
     "fit": "Ajustar à janela",
     "surface": "Tela do Koharu",

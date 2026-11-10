@@ -9,7 +9,7 @@ import {
   useQuery,
 } from '@tanstack/react-query'
 
-import { commands, type FontFamily } from '@koharu/bridge/protocol'
+import { commands, type EntityId, type FontFamily } from '@koharu/bridge/protocol'
 
 import { call } from './backend'
 
@@ -79,6 +79,16 @@ export function useFontPreview(font: FontFamily | undefined, enabled = true) {
     },
     enabled: enabled && font !== undefined,
     gcTime: 5 * 60 * 1000,
+  })
+}
+
+export function useSourceImage(page: EntityId | undefined) {
+  return useQuery({
+    queryKey: ['source-image', page],
+    queryFn: async () => new Uint8Array(await call(commands.getPageSourceImage, page!)),
+    enabled: Boolean(page),
+    staleTime: Number.POSITIVE_INFINITY,
+    notifyOnChangeProps: ['data'],
   })
 }
 

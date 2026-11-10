@@ -54,6 +54,7 @@
     "working": "作業中…"
   },
   "canvas": {
+    "compareView": "原画像と並べて比較",
     "empty": "ページを選択して開始します。",
     "fit": "ウィンドウに合わせる",
     "surface": "Koharu キャンバス",

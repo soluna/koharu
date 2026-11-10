@@ -61,12 +61,15 @@ interface KoharuStore {
   processingScope: PipelineScope
   processingStages: Stage[]
   settingsOpen: boolean
+  compareView: boolean
   shortcuts: Shortcuts
   selectPages: (pages: EntityId[]) => void
   showInspector: (section: InspectorSection) => void
   setProcessingScope: (scope: PipelineScope) => void
   setProcessingStages: (stages: Stage[]) => void
   setSettingsOpen: (open: boolean) => void
+  setCompareView: (compareView: boolean) => void
+  toggleCompareView: () => void
   selectLayers: (layers: EntityId[]) => void
   setTool: (tool: CanvasTool) => void
   setBrush: (brush: CanvasBrush) => void
@@ -109,12 +112,15 @@ export const useKoharuStore = create<KoharuStore>()((set) => ({
   processingScope: 'selected-pages',
   processingStages: [...pipelineStages],
   settingsOpen: false,
+  compareView: false,
   shortcuts: defaultShortcuts,
   selectPages: (selectedPages) => set({ selectedPages: [...new Set(selectedPages)] }),
   showInspector: (inspector) => set({ inspector }),
   setProcessingScope: (processingScope) => set({ processingScope }),
   setProcessingStages: (processingStages) => set({ processingStages }),
   setSettingsOpen: (settingsOpen) => set({ settingsOpen }),
+  setCompareView: (compareView) => set({ compareView }),
+  toggleCompareView: () => set((state) => ({ compareView: !state.compareView })),
   selectLayers: (selectedLayers) => set({ selectedLayers: [...new Set(selectedLayers)] }),
   setTool: (tool) => set({ tool }),
   setBrush: (brush) => set({ brush }),

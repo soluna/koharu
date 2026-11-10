@@ -30,6 +30,16 @@ impl IpcResponse for ThumbnailBytes {
     }
 }
 
+#[derive(Type)]
+#[specta(transparent)]
+pub(crate) struct SourceImageBytes(#[specta(type = Vec<u8>)] Vec<u8>);
+
+impl IpcResponse for SourceImageBytes {
+    fn body(self) -> tauri::Result<tauri::ipc::InvokeResponseBody> {
+        Ok(self.0.into())
+    }
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Type)]
 #[serde(rename_all = "snake_case")]
 pub enum ExportFormat {
@@ -186,6 +196,30 @@ pub(crate) async fn get_thumbnail(
     })
     .await?;
     Ok(ThumbnailBytes(bytes))
+}
+
+// The comparison view is a read-only reference that never enters a rendered or exported
+// frame, so the stored source blob is returned verbatim: no decode, resize, or re-encode.
+#[tauri::command]
+#[specta::specta]
+pub(crate) async fn get_page_source_image(
+    page: EntityId,
+    project: State<'_, CurrentProject>,
+) -> std::result::Result<SourceImageBytes, Error> {
+    let snapshot = project
+        .project
+        .lock()
+        .await
+        .as_ref()
+        .context("no project is open")?
+        .snapshot();
+    snapshot.page(page)?;
+    let blob = snapshot
+        .asset(page, &AssetRole::new("source")?)?
+        .with_context(|| format!("page {page} has no source image"))?
+        .blob;
+    let bytes = snapshot.read_blob(blob).await?;
+    Ok(SourceImageBytes(bytes.to_vec()))
 }
 
 pub(crate) async fn rendered_preview(

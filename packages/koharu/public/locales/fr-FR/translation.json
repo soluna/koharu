@@ -54,6 +54,7 @@
     "working": "Travail en cours…"
   },
   "canvas": {
+    "compareView": "Comparer avec l'original",
     "empty": "Sélectionnez une page pour commencer.",
     "fit": "Ajuster à la fenêtre",
     "surface": "Canevas Koharu",

@@ -54,6 +54,7 @@
     "working": "正在工作…"
   },
   "canvas": {
+    "compareView": "并排对比原图",
     "empty": "请选择页面以开始。",
     "fit": "适应窗口",
     "surface": "Koharu 画布",

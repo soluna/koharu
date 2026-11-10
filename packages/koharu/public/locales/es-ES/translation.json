@@ -54,6 +54,7 @@
     "working": "Trabajando…"
   },
   "canvas": {
+    "compareView": "Comparar con el original",
     "empty": "Selecciona una página para empezar.",
     "fit": "Ajustar a la ventana",
     "surface": "Lienzo de Koharu",

@@ -1,16 +1,23 @@
 'use client'
 
+import { useTranslation } from 'react-i18next'
+
 import { InferenceControl } from '@/components/editor/InferenceControl'
 import { call } from '@/lib/backend'
 import { usePage } from '@/lib/queries'
 import { pipelineStages, useKoharuStore, type PipelineScope } from '@/lib/store'
 import { commands, type Scope, type Stage } from '@koharu/bridge/protocol'
+import { Button } from '@koharu/ui/components/button'
+import { cn } from '@koharu/ui/lib/utils'
 
 export function CanvasCommandBar() {
+  const { t } = useTranslation()
   const page = usePage().data
   const selectedPages = useKoharuStore((state) => state.selectedPages)
   const jobs = useKoharuStore((state) => state.jobs)
   const running = Object.values(jobs).find((job) => job.state === 'running')
+  const compareView = useKoharuStore((state) => state.compareView)
+  const toggleCompareView = useKoharuStore((state) => state.toggleCompareView)
 
   const run = (selection: PipelineScope, stages: Stage[]) => {
     if (!page) return
@@ -31,6 +38,22 @@ export function CanvasCommandBar() {
 
   return (
     <header className='flex h-10 shrink-0 items-center gap-2 border-b border-border/80 bg-[var(--surface-toolbar)] px-2.5'>
+      <Button
+        type='button'
+        variant='ghost'
+        size='sm'
+        title={t('canvas.compareView')}
+        aria-pressed={compareView}
+        className={cn(
+          'h-8 shrink-0 gap-1.5 rounded-lg px-2.5 text-[11px] font-normal',
+          compareView
+            ? 'bg-accent text-accent-foreground'
+            : 'text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground',
+        )}
+        onClick={toggleCompareView}
+      >
+        {t('canvas.compareView')}
+      </Button>
       <div className='min-w-0 flex-1' />
       <InferenceControl disabled={!page || Boolean(running)} onRun={run} />
     </header>
